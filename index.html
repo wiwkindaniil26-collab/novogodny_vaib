@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#141b4d">
+<title>Новый год в кругу семьи ✨</title>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+  :root { --gold:#ffd86b; }
+  html { scroll-behavior:smooth; background:#0a0d2b; -webkit-text-size-adjust:100%; }
+  * { -webkit-tap-highlight-color:transparent; }
+  body {
+    font-family:'Nunito',sans-serif;
+    background: radial-gradient(ellipse at top, #243b8a 0%, #141b4d 45%, #0a0d2b 100%);
+    color:#fff; min-height:100vh; overflow-x:hidden; touch-action:manipulation;
+  }
+  .script { font-family:'Pacifico',cursive; }
+  .glass { background:rgba(255,255,255,.08); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.18); border-radius:1.5rem; box-shadow:0 10px 40px rgba(0,0,0,.25); }
+  .btn { background:linear-gradient(135deg,#ff4d5e,#d6203a); color:#fff; font-weight:800; padding:.75rem 1.3rem; min-height:46px; border-radius:999px; transition:.2s; box-shadow:0 6px 18px rgba(214,32,58,.45); cursor:pointer; }
+  .btn:hover { transform:translateY(-2px) scale(1.04); }
+  .btn:active { transform:scale(.97); }
+  .btn:disabled { opacity:.55; cursor:wait; transform:none; }
+  .btn.gold { background:linear-gradient(135deg,#ffd86b,#f5a524); color:#3b2400; box-shadow:0 6px 18px rgba(245,165,36,.4); }
+  .btn.green { background:linear-gradient(135deg,#2fbf71,#16804a); box-shadow:0 6px 18px rgba(22,128,74,.45); }
+  .btn.ghost { background:rgba(255,255,255,.12); box-shadow:none; border:1px solid rgba(255,255,255,.3); }
+
+  /* garland */
+  .garland { position:fixed; top:0; left:0; right:0; height:56px; z-index:30; pointer-events:none; display:flex; justify-content:space-around; }
+  .garland::before { content:""; position:absolute; top:6px; left:-2%; right:-2%; height:22px; border-bottom:3px solid #1b5e3b; border-radius:0 0 50% 50% / 0 0 100% 100%; }
+  .bulb { position:relative; top:16px; width:14px; height:22px; border-radius:50% 50% 50% 50% / 40% 40% 60% 60%; animation:blink 1.6s infinite; }
+  .bulb::before { content:""; position:absolute; top:-5px; left:3px; width:8px; height:7px; background:#444; border-radius:2px; }
+  @keyframes blink { 0%,100%{opacity:1; filter:brightness(1.3) drop-shadow(0 0 8px currentColor);} 50%{opacity:.35; filter:brightness(.7);} }
+
+  .countbox { min-width:0; flex:1; max-width:110px; padding:.7rem .25rem; border-radius:1rem; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.25); text-align:center; }
+  .countbox b { display:block; font-size:1.8rem; line-height:1; font-weight:800; color:var(--gold); text-shadow:0 0 18px rgba(255,216,107,.6); font-variant-numeric:tabular-nums; }
+  .countbox span { font-size:.62rem; opacity:.8; text-transform:uppercase; letter-spacing:.06em; }
+  @media (min-width:640px){ .countbox{padding:1.1rem .5rem;border-radius:1.1rem;} .countbox b{font-size:3.4rem;} .countbox span{font-size:.75rem;letter-spacing:.1em;} }
+
+  .twinkle { animation:tw 2.5s ease-in-out infinite; }
+  @keyframes tw { 0%,100%{opacity:1; transform:scale(1);} 50%{opacity:.5; transform:scale(.85);} }
+  .float { animation:fl 4s ease-in-out infinite; }
+  @keyframes fl { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+
+  #tree-wrap svg { cursor:crosshair; touch-action:manipulation; -webkit-user-select:none; user-select:none; }
+  .lights-on .tl { animation:blink 1.2s infinite; }
+  .shake { animation:sh .4s; }
+  @keyframes sh { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-6px);} 75%{transform:translateX(6px);} }
+  @keyframes pop { from{transform:scale(0);} to{transform:scale(1);} }
+  .orn { transform-box:fill-box; transform-origin:center; animation:pop .35s cubic-bezier(.3,1.8,.5,1); }
+
+  .check { appearance:none; -webkit-appearance:none; width:28px; height:28px; border-radius:8px; border:2px solid rgba(255,255,255,.5); display:grid; place-items:center; cursor:pointer; flex:none; transition:.2s; }
+  .check:checked { background:#2fbf71; border-color:#2fbf71; }
+  .check:checked::after { content:"✓"; font-weight:800; }
+  .done { text-decoration:line-through; opacity:.55; }
+
+  .note { transform:rotate(var(--r)); transition:.25s; animation:pop .4s; word-break:break-word; }
+  .note.noanim { animation:none; }
+  .note:hover { transform:rotate(0) scale(1.04); z-index:5; }
+
+  input[type=text], textarea { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.3); border-radius:1rem; padding:.75rem 1rem; color:#fff; width:100%; outline:none; font-size:16px; min-height:46px; }
+  input::placeholder, textarea::placeholder { color:rgba(255,255,255,.55); }
+  input:focus, textarea:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(255,216,107,.25); }
+
+  canvas.fx { position:fixed; inset:0; width:100%; height:100%; pointer-events:none; }
+  .fade-in { animation:fi .6s both; }
+  @keyframes fi { from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:none;} }
+
+  .saved-tag { font-size:.8rem; opacity:0; transition:opacity .4s; color:#8dffb8; }
+  .saved-tag.show { opacity:1; }
+
+  .dot { width:10px; height:10px; border-radius:50%; display:inline-block; background:#888; flex:none; }
+  .dot.ok { background:#4dff9a; box-shadow:0 0 10px #4dff9a; }
+  .dot.busy { background:#ffd86b; animation:tw 1s infinite; }
+  .dot.err { background:#ff5d6e; box-shadow:0 0 10px #ff5d6e; }
+  .code { font-family:ui-monospace,Menlo,Consolas,monospace; background:rgba(0,0,0,.3); border:1px dashed rgba(255,255,255,.4); border-radius:.8rem; padding:.6rem .8rem; word-break:break-all; font-size:.9rem; user-select:all; -webkit-user-select:all; }
+
+  #musicBtn { right:max(1rem, env(safe-area-inset-right)); bottom:max(1rem, env(safe-area-inset-bottom)); }
+
+  @media (max-width:639px){
+    .glass { border-radius:1.25rem; }
+    .btn { padding:.7rem 1rem; font-size:.95rem; }
+    .note:hover { transform:rotate(var(--r)); }
+  }
+  @media (prefers-reduced-motion:reduce){ .float,.twinkle,.bulb{animation:none;} }
+</style>
+</head>
+<body>
+
+<canvas id="snow" class="fx" style="z-index:1"></canvas>
+<canvas id="fire" class="fx" style="z-index:50"></canvas>
+<div class="garland" id="garland"></div>
+
+<button id="musicBtn" class="btn gold fixed z-40 !px-4" title="Музыка"><span id="musicIcon">🔔</span><span id="musicLbl" class="hidden sm:inline"> Музыка</span></button>
+
+<main class="relative z-10 max-w-5xl mx-auto px-3 sm:px-4 pt-16 sm:pt-20 pb-24 space-y-6 sm:space-y-10">
+
+  <!-- HERO -->
+  <section class="text-center pt-4">
+    <div class="text-5xl float inline-block">🎄</div>
+    <h1 class="script text-4xl sm:text-7xl mt-2 leading-tight" style="text-shadow:0 0 30px rgba(255,216,107,.5)">
+      С Новым <span id="yearTxt" style="color:var(--gold)">годом</span>!
+    </h1>
+    <p class="mt-3 sm:mt-4 text-base sm:text-xl opacity-90 max-w-xl mx-auto">Тепло, мандарины, смех и самые родные люди рядом — вот и вся магия ✨</p>
+
+    <div id="countdown" class="mt-6 sm:mt-8 flex justify-center gap-2 sm:gap-4 px-1">
+      <div class="countbox"><b id="cd-d">0</b><span>дней</span></div>
+      <div class="countbox"><b id="cd-h">0</b><span>часов</span></div>
+      <div class="countbox"><b id="cd-m">0</b><span>минут</span></div>
+      <div class="countbox"><b id="cd-s">0</b><span>секунд</span></div>
+    </div>
+    <p id="cdNote" class="mt-4 opacity-80 text-sm sm:text-base"></p>
+
+    <div class="mt-6 flex flex-wrap gap-2 sm:gap-3 justify-center">
+      <button class="btn" id="fireBtn">🎆 Салют</button>
+      <button class="btn green" onclick="document.getElementById('tree').scrollIntoView()">🎄 Нарядить ёлку</button>
+      <button class="btn ghost" id="cheerBtn">🥂 Тост!</button>
+    </div>
+    <p id="toast" class="mt-5 min-h-[3rem] text-lg sm:text-xl script text-[color:var(--gold)] px-2"></p>
+  </section>
+
+  <!-- SYNC -->
+  <section id="sync" class="glass p-4 sm:p-8">
+    <h2 class="script text-2xl sm:text-4xl text-center">Семейная комната 🔗</h2>
+    <p class="text-center opacity-80 mt-1 text-sm sm:text-base max-w-xl mx-auto">Ёлка, традиции и желания будут общими на всех телефонах и компьютерах семьи — в реальном времени</p>
+
+    <!-- не в комнате -->
+    <div id="syncOff" class="mt-5 max-w-xl mx-auto space-y-4">
+      <div class="text-center">
+        <button class="btn green" id="createRoomBtn">✨ Создать семейную комнату</button>
+      </div>
+      <p class="text-center text-sm opacity-60">— или присоединитесь к существующей —</p>
+      <form id="joinForm" class="flex flex-col sm:flex-row gap-2">
+        <input type="text" id="joinCode" placeholder="Код комнаты или ссылка" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <button class="btn gold" type="submit">Войти</button>
+      </form>
+    </div>
+
+    <!-- в комнате -->
+    <div id="syncOn" class="mt-5 max-w-xl mx-auto space-y-4 hidden">
+      <div class="flex items-center gap-2 justify-center text-sm sm:text-base">
+        <span class="dot" id="syncDot"></span><span id="syncStatus"></span>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wider opacity-60 mb-1">Код вашей комнаты</p>
+        <div class="code" id="roomCode"></div>
+      </div>
+      <div class="flex flex-wrap gap-2 justify-center">
+        <button class="btn" id="shareBtn">📤 Пригласить семью</button>
+        <button class="btn ghost" id="copyCodeBtn">📋 Копировать код</button>
+        <button class="btn ghost" id="syncNowBtn">🔄 Обновить</button>
+      </div>
+      <div class="text-center"><button id="leaveBtn" class="text-sm underline opacity-60 hover:opacity-100 py-2 px-3">Выйти из комнаты</button></div>
+    </div>
+
+    <p id="syncMsg" class="text-center mt-3 min-h-[1.5rem] text-sm"></p>
+    <p class="text-center text-xs opacity-50 max-w-md mx-auto">Любой, у кого есть код или ссылка, может видеть и менять записи. Не пишите сюда ничего секретного.</p>
+  </section>
+
+  <!-- TREE -->
+  <section id="tree" class="glass p-4 sm:p-8">
+    <h2 class="script text-2xl sm:text-4xl text-center">Наряди ёлку всей семьёй 🎅</h2>
+    <p class="text-center opacity-80 mt-1 text-sm sm:text-base">Тапай по ёлке — там появятся игрушки. Каждый вешает свою!</p>
+    <div class="grid md:grid-cols-2 gap-5 sm:gap-6 items-center mt-4 sm:mt-5">
+      <div id="tree-wrap" class="flex justify-center">
+        <svg id="treeSvg" viewBox="0 0 300 360" class="w-full max-w-[19rem] sm:max-w-sm">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2fae68"/><stop offset="1" stop-color="#0f6b3d"/></linearGradient>
+            <radialGradient id="starG"><stop offset="0" stop-color="#fff7c2"/><stop offset="1" stop-color="#ffc83d"/></radialGradient>
+          </defs>
+          <rect x="132" y="300" width="36" height="42" rx="4" fill="#7a4a24"/>
+          <polygon points="150,60 70,150 230,150" fill="url(#g1)"/>
+          <polygon points="150,100 50,205 250,205" fill="url(#g1)" stroke="#0d5a33" stroke-width="1"/>
+          <polygon points="150,150 30,265 270,265" fill="url(#g1)" stroke="#0d5a33" stroke-width="1"/>
+          <polygon points="150,200 15,310 285,310" fill="url(#g1)" stroke="#0d5a33" stroke-width="1"/>
+          <polygon id="star" class="twinkle" style="transform-box:fill-box;transform-origin:center;filter:drop-shadow(0 0 12px #ffd86b)"
+            points="150,12 158,36 184,36 163,51 171,76 150,61 129,76 137,51 116,36 142,36" fill="url(#starG)"/>
+          <g id="lightsLayer"></g>
+          <g id="ornaments"></g>
+        </svg>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <p class="font-bold mb-2">Выбери игрушку:</p>
+          <div id="ornPicker" class="flex flex-wrap gap-2 text-2xl sm:text-3xl"></div>
+        </div>
+        <div class="flex flex-wrap gap-2 sm:gap-3">
+          <button class="btn gold" id="lightsBtn">💡 Включить огни</button>
+          <button class="btn ghost" id="randomOrn">🎁 Нарядить само</button>
+          <button class="btn ghost" id="clearOrn">🧹 Снять всё</button>
+        </div>
+        <p class="opacity-80">Игрушек на ёлке: <b id="ornCount" class="text-[color:var(--gold)] text-xl">0</b></p>
+        <p id="treeMsg" class="text-sm text-[color:var(--gold)] min-h-[1.25rem]"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PREDICTIONS -->
+  <section class="glass p-4 sm:p-8">
+    <h2 class="script text-2xl sm:text-4xl text-center">Предсказание на год 🔮</h2>
+    <p class="text-center opacity-80 mt-1 text-sm sm:text-base">Введи имя — волшебный шар скажет, что ждёт именно тебя</p>
+    <div class="flex flex-col sm:flex-row gap-3 mt-5 max-w-xl mx-auto">
+      <input type="text" id="predName" placeholder="Имя (мама, папа, Саша...)" maxlength="30">
+      <button class="btn" id="predBtn">Узнать ✨</button>
+    </div>
+    <div id="predOut" class="mt-6 text-center text-lg sm:text-2xl min-h-[5rem] max-w-2xl mx-auto"></div>
+  </section>
+
+  <!-- CHECKLIST -->
+  <section class="glass p-4 sm:p-8">
+    <h2 class="script text-2xl sm:text-4xl text-center">Наши новогодние традиции ✅</h2>
+    <p class="text-center mt-1"><span class="saved-tag">💾 Сохранено</span></p>
+    <div class="mt-3 h-4 rounded-full bg-white/15 overflow-hidden max-w-xl mx-auto">
+      <div id="bar" class="h-full rounded-full transition-all duration-500" style="width:0;background:linear-gradient(90deg,#ff4d5e,#ffd86b,#2fbf71)"></div>
+    </div>
+    <p id="barTxt" class="text-center mt-2 opacity-90 text-sm sm:text-base"></p>
+    <ul id="todo" class="mt-5 grid sm:grid-cols-2 gap-2 sm:gap-3"></ul>
+    <form id="todoForm" class="flex gap-2 mt-5 max-w-xl mx-auto">
+      <input type="text" id="todoNew" placeholder="Добавить свою традицию..." maxlength="60">
+      <button class="btn gold !px-5" type="submit" aria-label="Добавить">+</button>
+    </form>
+    <div class="text-center mt-3"><button id="todoReset" class="text-sm underline opacity-60 hover:opacity-100 py-2 px-3">Сбросить отметки</button></div>
+  </section>
+
+  <!-- WISHES -->
+  <section class="glass p-4 sm:p-8">
+    <h2 class="script text-2xl sm:text-4xl text-center">Стена желаний 🌟</h2>
+    <p class="text-center opacity-80 mt-1 text-sm sm:text-base">Напишите по желанию — откроем их в конце года и посмотрим, что сбылось</p>
+    <p class="text-center mt-1"><span class="saved-tag">💾 Сохранено</span></p>
+    <form id="wishForm" class="grid sm:grid-cols-[1fr_2fr_auto] gap-3 mt-4">
+      <input type="text" id="wishWho" placeholder="От кого" maxlength="20" required>
+      <input type="text" id="wishTxt" placeholder="Моё желание на год..." maxlength="120" required>
+      <button class="btn" type="submit">Загадать 💫</button>
+    </form>
+    <div id="wishes" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-7"></div>
+    <p id="noWish" class="text-center opacity-60 mt-4">Пока пусто — загадай первое желание!</p>
+    <div class="text-center mt-3"><button id="wishClear" class="text-sm underline opacity-60 hover:opacity-100 py-2 px-3">Очистить стену</button></div>
+  </section>
+
+  <footer class="text-center opacity-85 pb-6 px-2">
+    <p class="script text-xl sm:text-3xl text-[color:var(--gold)]">Пусть в новом году сбудется всё, о чём мечтаете!</p>
+    <p class="mt-2 text-sm sm:text-base">Здоровья, любви, уюта и много поводов собираться вместе ❤️</p>
+    <p id="storeNote" class="mt-3 text-xs text-amber-300 hidden">⚠️ Браузер блокирует постоянное хранилище — записи сохранятся до закрытия вкладки.</p>
+  </footer>
+</main>
+
+<script>
+/* =====================================================================
+   helpers
+   ===================================================================== */
+const $ = s => document.querySelector(s);
+const rnd = a => a[Math.floor(Math.random()*a.length)];
+const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const isMobile = () => innerWidth < 640;
+const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+/* =====================================================================
+   локальное хранилище: localStorage -> window.name
+   ===================================================================== */
+const store = (() => {
+  const KEY='ny_family_v3', OLD='ny_family_v2';
+  let ls=null;
+  try { localStorage.setItem('__t','1'); localStorage.removeItem('__t'); ls=localStorage; } catch(e){}
+  function load(key){
+    try {
+      let raw = ls ? ls.getItem(key) : null;
+      if(!raw && window.name && window.name.indexOf(key+':')===0) raw = window.name.slice(key.length+1);
+      return raw ? (JSON.parse(raw)||null) : null;
+    } catch(e){ return null; }
+  }
+  let data = load(KEY);
+  let migrated = false;
+  if(!data){ data = load(OLD) || {}; migrated = true; }
+  if(ls && migrated) ['orns','todo','wishes'].forEach(k=>{
+    if(data[k]===undefined){ try{ const v=ls.getItem(k); if(v) data[k]=JSON.parse(v);}catch(e){} }
+  });
+  function flush(){
+    const s=JSON.stringify(data);
+    if(ls){ try{ ls.setItem(KEY,s); }catch(e){} }
+    try{ window.name = KEY+':'+s; }catch(e){}
+  }
+  addEventListener('pagehide', flush);
+  document.addEventListener('visibilitychange', ()=>{ if(document.hidden) flush(); });
+  return {
+    persistent: !!ls,
+    get:(k,d)=> data[k]===undefined ? d : data[k],
+    set:(k,v)=>{ data[k]=v; flush(); },
+    del:(k)=>{ delete data[k]; flush(); }
+  };
+})();
+if(!store.persistent) $('#storeNote').classList.remove('hidden');
+
+let savedTimer;
+function flashSaved(){
+  document.querySelectorAll('.saved-tag').forEach(t=>t.classList.add('show'));
+  clearTimeout(savedTimer);
+  savedTimer=setTimeout(()=>document.querySelectorAll('.saved-tag').forEach(t=>t.classList.remove('show')),1500);
+}
+
+/* =====================================================================
+   МОДЕЛЬ ДАННЫХ
+   Каждая запись: {id, ts (создана), u (обновлена), del? (удалена), ...поля}
+   Слияние двух устройств — по id, побеждает запись с большим u.
+   Удаление = пометка del:true (чтобы удаление тоже синхронизировалось).
+   ===================================================================== */
+const DEF_TEXTS=[
+ 'Нарядить ёлку','Купить мандарины','Приготовить оливье','Посмотреть «Ирония судьбы»','Написать пожелания друг другу','Завернуть подарки',
+ 'Загадать желание под бой курантов','Прогуляться по зимнему городу','Испечь что-нибудь вкусное','Позвонить далёким родным'
+];
+const defTodo = () => DEF_TEXTS.map((t,i)=>({id:'def-'+i,t,d:false,ts:i,u:0}));
+
+function migrateList(list,kind){
+  if(!Array.isArray(list)) return null;
+  const base=Date.now();
+  const out=list.filter(x=>x&&typeof x==='object').map((x,i)=>{
+    if(x.id) return x;
+    if(kind==='todo'){
+      const di=DEF_TEXTS.indexOf(x.t);
+      return {id:di>=0?'def-'+di:uid(),t:x.t,d:!!x.d,ts:di>=0?di:base+i,u:1};
+    }
+    if(kind==='orns') return {id:uid(),t:x.t,x:x.x,y:x.y,c:x.c,ts:base+i,u:1};
+    return {id:uid(),w:x.w,t:x.t,c:x.c,r:x.r,ts:base-i*1000,u:1}; // wishes
+  });
+  if(kind==='todo'){ // удалённые дефолтные пункты -> надгробия
+    const have=new Set(out.map(x=>x.id));
+    DEF_TEXTS.forEach((t,i)=>{ if(!have.has('def-'+i)) out.push({id:'def-'+i,t,d:false,ts:i,u:1,del:true}); });
+  }
+  return out;
+}
+
+const state = {
+  todo:   migrateList(store.get('todo',null),'todo')   || defTodo(),
+  orns:   migrateList(store.get('orns',null),'orns')   || [],
+  wishes: migrateList(store.get('wishes',null),'wishes') || []
+};
+
+const TOMB_TTL = 30*864e5;
+function mergeLists(a,b){
+  const m=new Map();
+  for(const r of [].concat(a||[], b||[])){
+    if(!r||!r.id) continue;
+    const c=m.get(r.id);
+    if(!c){ m.set(r.id,r); continue; }
+    const ru=r.u||0, cu=c.u||0;
+    if(ru>cu || (ru===cu && JSON.stringify(r)>JSON.stringify(c))) m.set(r.id,r);
+  }
+  const cutoff=Date.now()-TOMB_TTL;
+  return [...m.values()]
+    .filter(r=>!(r.del && (r.u||0)<cutoff))
+    .sort((x,y)=>((x.ts||0)-(y.ts||0)) || (x.id<y.id?-1:1));
+}
+function stable(v){
+  return JSON.stringify(v,(k,val)=> val&&typeof val==='object'&&!Array.isArray(val)
+    ? Object.fromEntries(Object.entries(val).sort(([p],[q])=>p<q?-1:1)) : val);
+}
+function snapshot(){ return {app:'ny-family',v:3,todo:state.todo,orns:state.orns,wishes:state.wishes}; }
+function mergeState(a,b){
+  return {app:'ny-family',v:3,
+    todo:mergeLists(a.todo,b.todo), orns:mergeLists(a.orns,b.orns), wishes:mergeLists(a.wishes,b.wishes)};
+}
+const sig = s => stable([mergeLists(s.todo,[]),mergeLists(s.orns,[]),mergeLists(s.wishes,[])]);
+
+function persist(){
+  store.set('todo',state.todo); store.set('orns',state.orns); store.set('wishes',state.wishes);
+}
+/* вызывается после любого локального изменения */
+function commit(opts={}){
+  persist();
+  if(opts.saved!==false) flashSaved();
+  schedulePush(600);
+}
+const live = a => a.filter(r=>!r.del);
+
+/* =====================================================================
+   СИНХРОНИЗАЦИЯ (jsonblob.com — бесплатно, без регистрации, CORS: *)
+   ===================================================================== */
+const API='https://jsonblob.com/api/jsonBlob';
+let room = store.get('room',null);
+let syncing=false, again=false, pushTimer=null, lastSync=0, syncStatus='off';
+
+function extractCode(raw){
+  raw=String(raw||'').trim();
+  if(!raw) return null;
+  const m=raw.match(/room=([\w-]+)/i);
+  if(m) return m[1];
+  const last=raw.split(/[\/?#]/).filter(Boolean).pop();
+  return /^[\w-]{8,64}$/.test(last||'') ? last : null;
+}
+function inviteLink(){ return location.href.split('#')[0]+'#room='+encodeURIComponent(room); }
+
+async function fetchRemote(id){
+  const r=await fetch(API+'/'+encodeURIComponent(id),{headers:{'Accept':'application/json'},cache:'no-store'});
+  if(r.status===404) throw new Error('404');
+  if(!r.ok) throw new Error('http '+r.status);
+  const j=await r.json();
+  if(!j||typeof j!=='object'||j.app!=='ny-family') throw new Error('foreign');
+  return j;
+}
+async function putRemote(id,data){
+  const r=await fetch(API+'/'+encodeURIComponent(id),{
+    method:'PUT',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)});
+  if(r.status===404) throw new Error('404');
+  if(!r.ok) throw new Error('http '+r.status);
+}
+async function createRemote(data){
+  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)});
+  if(!r.ok) throw new Error('http '+r.status);
+  const loc=r.headers.get('Location')||r.headers.get('X-jsonblob')||'';
+  const id=loc.split('/').filter(Boolean).pop();
+  if(!id) throw new Error('noid');
+  return id;
+}
+
+function ago(ts){
+  const s=Math.round((Date.now()-ts)/1000);
+  if(s<8) return 'только что';
+  if(s<60) return s+' сек назад';
+  const m=Math.round(s/60); if(m<60) return m+' мин назад';
+  return Math.round(m/60)+' ч назад';
+}
+function setStatus(st){ syncStatus=st; renderSync(); }
+function renderSync(){
+  const inRoom=!!room;
+  $('#syncOff').classList.toggle('hidden',inRoom);
+  $('#syncOn').classList.toggle('hidden',!inRoom);
+  if(!inRoom) return;
+  $('#roomCode').textContent=room;
+  const dot=$('#syncDot'), txt=$('#syncStatus');
+  dot.className='dot '+(syncStatus==='ok'?'ok':syncStatus==='busy'?'busy':syncStatus==='err'||syncStatus==='notfound'?'err':'');
+  txt.textContent =
+    syncStatus==='busy' ? 'Синхронизация…' :
+    syncStatus==='ok' ? 'Синхронизировано · '+ago(lastSync) :
+    syncStatus==='notfound' ? 'Комната не найдена — возможно, удалена' :
+    syncStatus==='err' ? 'Нет связи — всё сохранено на устройстве, повторим позже' : '';
+}
+setInterval(()=>{ if(room && syncStatus==='ok') renderSync(); },15000);
+let msgTimer;
+function syncMsg(t,kind){
+  const m=$('#syncMsg'); m.textContent=t||'';
+  m.style.color = kind==='err'?'#ff9aa5':kind==='ok'?'#8dffb8':'';
+  clearTimeout(msgTimer); if(t) msgTimer=setTimeout(()=>m.textContent='',5000);
+}
+
+function schedulePush(ms){
+  if(!room) return;
+  clearTimeout(pushTimer);
+  pushTimer=setTimeout(syncNow,ms);
+}
+async function syncNow(){
+  if(!room) return;
+  if(syncing){ again=true; return; }
+  syncing=true; setStatus('busy');
+  try{
+    const remote=await fetchRemote(room);
+    const local=snapshot();
+    const merged=mergeState(local,remote);
+    const ms=sig(merged);
+    if(ms!==sig(local)){
+      state.todo=merged.todo; state.orns=merged.orns; state.wishes=merged.wishes;
+      persist(); renderAll();
+    }
+    if(ms!==sig(remote)) await putRemote(room,merged);
+    lastSync=Date.now(); setStatus('ok');
+  }catch(e){
+    setStatus(e.message==='404'?'notfound':'err');
+  }finally{
+    syncing=false;
+    if(again){ again=false; schedulePush(300); }
+  }
+}
+function setRoom(id){
+  room=id; store.set('room',id); lastSync=0; setStatus('busy');
+}
+async function createRoom(){
+  const btn=$('#createRoomBtn'); btn.disabled=true; syncMsg('Создаём комнату…');
+  try{
+    const id=await createRemote(snapshot());
+    setRoom(id); lastSync=Date.now(); setStatus('ok');
+    syncMsg('Комната создана! Нажмите «Пригласить семью» 🎉','ok');
+    launch(); launch();
+  }catch(e){
+    syncMsg('Не удалось создать комнату — проверьте интернет и попробуйте ещё раз','err');
+  }finally{ btn.disabled=false; }
+}
+async function joinRoom(raw){
+  const code=extractCode(raw);
+  if(!code){ syncMsg('Введите код комнаты или ссылку-приглашение','err'); return; }
+  syncMsg('Подключаемся…');
+  try{ await fetchRemote(code); }
+  catch(e){
+    syncMsg(e.message==='404'||e.message==='foreign' ? 'Комната с таким кодом не найдена' : 'Не удалось подключиться — проверьте интернет','err');
+    return;
+  }
+  setRoom(code);
+  await syncNow();
+  syncMsg('Вы в семейной комнате! 🎉','ok'); launch();
+}
+function leaveRoom(){
+  if(!confirm('Выйти из комнаты? Данные останутся на этом устройстве, но перестанут синхронизироваться.')) return;
+  room=null; store.del('room'); clearTimeout(pushTimer); setStatus('off'); renderSync();
+  syncMsg('Вы вышли из комнаты');
+}
+async function copyText(t){
+  try{ await navigator.clipboard.writeText(t); return true; }
+  catch(e){
+    const ta=document.createElement('textarea'); ta.value=t; ta.style.cssText='position:fixed;opacity:0;top:0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    let ok=false; try{ ok=document.execCommand('copy'); }catch(_){}
+    ta.remove(); return ok;
+  }
+}
+$('#createRoomBtn').onclick=createRoom;
+$('#joinForm').onsubmit=e=>{ e.preventDefault(); joinRoom($('#joinCode').value); };
+$('#syncNowBtn').onclick=()=>{ clearTimeout(pushTimer); syncNow(); };
+$('#leaveBtn').onclick=leaveRoom;
+$('#copyCodeBtn').onclick=async()=>{ syncMsg((await copyText(room))?'Код скопирован 📋':'Не удалось скопировать — выделите код вручную', 'ok'); };
+$('#shareBtn').onclick=async()=>{
+  const url=inviteLink();
+  if(navigator.share){
+    try{ await navigator.share({title:'Новый год в кругу семьи',text:'Присоединяйся к нашей новогодней комнате 🎄',url}); return; }
+    catch(e){ if(e&&e.name==='AbortError') return; }
+  }
+  syncMsg((await copyText(url))?'Ссылка-приглашение скопирована — отправьте её семье 💌':'Не удалось скопировать ссылку','ok');
+};
+
+/* вход по ссылке #room=... */
+function handleHash(){
+  const m=location.hash.match(/room=([\w-]+)/i);
+  if(!m) return;
+  const id=m[1];
+  try{ history.replaceState(null,'',location.href.split('#')[0]); }catch(e){}
+  if(id!==room){ document.getElementById('sync').scrollIntoView(); joinRoom(id); }
+}
+addEventListener('hashchange',handleHash);
+
+/* периодический опрос + обновление при возврате на вкладку */
+setInterval(()=>{ if(room && !document.hidden && navigator.onLine!==false) syncNow(); },6000);
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden && room) syncNow(); });
+addEventListener('online',()=>{ if(room) syncNow(); });
+
+/* =====================================================================
+   garland
+   ===================================================================== */
+(function(){
+  const g=$('#garland'), cols=['#ff4d5e','#ffd86b','#4dd2ff','#5bff9a','#ff8de1'];
+  const n=Math.floor(innerWidth/(isMobile()?34:38));
+  for(let i=0;i<n;i++){
+    const b=document.createElement('div'); b.className='bulb';
+    const c=cols[i%cols.length]; b.style.background=c; b.style.color=c;
+    b.style.animationDelay=(i%5)*.3+'s';
+    b.style.top=(10+Math.sin(i/n*Math.PI)*14)+'px';
+    g.appendChild(b);
+  }
+})();
+
+/* ---------- countdown ---------- */
+const targetYear=new Date().getFullYear()+1;
+$('#yearTxt').textContent=targetYear+' годом';
+function tick(){
+  const now=new Date(), target=new Date(targetYear,0,1,0,0,0);
+  let diff=Math.max(0,target-now);
+  const d=Math.floor(diff/864e5), h=Math.floor(diff/36e5)%24, m=Math.floor(diff/6e4)%60, s=Math.floor(diff/1e3)%60;
+  $('#cd-d').textContent=d; $('#cd-h').textContent=String(h).padStart(2,'0');
+  $('#cd-m').textContent=String(m).padStart(2,'0'); $('#cd-s').textContent=String(s).padStart(2,'0');
+  $('#cdNote').textContent = d>60 ? 'Время до '+targetYear+' года ещё есть — наслаждайтесь каждым днём!' :
+    d>7 ? 'Совсем скоро! Пора доставать гирлянды 🎄' :
+    d>0 ? 'Уже на пороге! Мандарины куплены? 🍊' : 'Осталось всего несколько часов — готовим шампанское! 🥂';
+  if(diff===0 && !tick.done){ tick.done=1; $('#cdNote').textContent='С НОВЫМ ГОДОМ!!! 🎉'; bigShow(); }
+}
+tick(); setInterval(tick,1000);
+
+/* ---------- snow ---------- */
+const sc=$('#snow'), sx=sc.getContext('2d'); let flakes=[];
+function rs(){ sc.width=innerWidth; sc.height=innerHeight; }
+rs();
+addEventListener('resize',()=>{ rs(); rf(); });
+const flakeCount = isMobile()?55:140;
+for(let i=0;i<flakeCount;i++) flakes.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*2.6+1,v:Math.random()*1+.4,p:Math.random()*6});
+let mouseX=0.5; addEventListener('pointermove',e=>{ if(e.pointerType==='mouse') mouseX=e.clientX/innerWidth; });
+function snow(){
+  sx.clearRect(0,0,sc.width,sc.height);
+  sx.fillStyle='rgba(255,255,255,.85)';
+  for(const f of flakes){
+    f.y+=f.v; f.p+=.01; f.x+=Math.sin(f.p)*.5+(mouseX-.5)*.8;
+    if(f.y>sc.height+5){f.y=-5;f.x=Math.random()*sc.width}
+    if(f.x>sc.width+5)f.x=-5; if(f.x<-5)f.x=sc.width+5;
+    sx.beginPath(); sx.arc(f.x,f.y,f.r,0,7); sx.fill();
+  }
+  requestAnimationFrame(snow);
+}
+snow();
+
+/* ---------- fireworks ---------- */
+const fc=$('#fire'), fx=fc.getContext('2d'); let parts=[], rockets=[];
+function rf(){ fc.width=innerWidth; fc.height=innerHeight; } rf();
+function burst(x,y){
+  const hue=Math.random()*360, n=(isMobile()?45:70)+Math.random()*30;
+  for(let i=0;i<n;i++){
+    const a=Math.PI*2*i/n, s=Math.random()*5+1.5;
+    parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,h:hue+Math.random()*40,g:.06});
+  }
+}
+function launch(x){
+  rockets.push({x:x??Math.random()*fc.width*.8+fc.width*.1,y:fc.height,ty:Math.random()*fc.height*.4+60,vy:-(8+Math.random()*3)});
+}
+function bigShow(){ const n=isMobile()?5:8; for(let i=0;i<n;i++) setTimeout(()=>launch(),i*350); }
+function loop(){
+  if(rockets.length||parts.length){
+    fx.globalCompositeOperation='destination-out'; fx.fillStyle='rgba(0,0,0,.2)'; fx.fillRect(0,0,fc.width,fc.height);
+    fx.globalCompositeOperation='lighter';
+    rockets=rockets.filter(r=>{
+      r.y+=r.vy; fx.fillStyle='#ffe9a8'; fx.beginPath(); fx.arc(r.x,r.y,2.5,0,7); fx.fill();
+      if(r.y<=r.ty){burst(r.x,r.y);return false} return true;
+    });
+    parts=parts.filter(p=>{
+      p.x+=p.vx; p.y+=p.vy; p.vy+=p.g; p.vx*=.985; p.life-=.014;
+      fx.fillStyle=`hsla(${p.h},100%,60%,${Math.max(p.life,0)})`; fx.beginPath(); fx.arc(p.x,p.y,2.2,0,7); fx.fill();
+      return p.life>0;
+    });
+    loop.idle=false;
+  } else if(!loop.idle){ fx.clearRect(0,0,fc.width,fc.height); loop.idle=true; }
+  requestAnimationFrame(loop);
+}
+loop();
+$('#fireBtn').onclick=bigShow;
+addEventListener('click',e=>{
+  if(e.target.closest('button,input,textarea,svg,a,li,label,.note,.code')) return;
+  launch(e.clientX);
+});
+
+/* ---------- toast ---------- */
+const toasts=[
+ 'За семью — за самых родных! 🥂','Чтобы все были здоровы и счастливы! ❤️','За то, чтобы мечты сбывались! ✨',
+ 'За тёплые вечера и вкусные ужины! 🍽️','За смех, который заразителен! 😄','За то, чтобы мы чаще собирались вместе! 🏠',
+ 'За чудеса, которые происходят рядом! 🎁','За мандарины и хорошее настроение! 🍊','За новые приключения всей семьёй! 🚀'
+];
+$('#cheerBtn').onclick=()=>{ const t=$('#toast'); t.textContent=rnd(toasts); t.classList.remove('fade-in'); void t.offsetWidth; t.classList.add('fade-in'); launch(); launch(); };
+
+/* =====================================================================
+   ЁЛКА
+   ===================================================================== */
+const ornColors=['#ff4d5e','#ffd86b','#4dd2ff','#c77dff','#5bff9a','#ff8de1','#ffffff'];
+const pickList=['ball','⭐','🔔','🎁','🍬','❄️','🍊','🧦'];
+let curOrn='ball';
+const picker=$('#ornPicker');
+pickList.forEach((o,i)=>{
+  const b=document.createElement('button'); b.className='w-12 h-12 rounded-xl bg-white/10 border border-white/25 hover:bg-white/25 transition grid place-items-center';
+  b.innerHTML=o==='ball'?'<span style="width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff,#ff4d5e 50%,#a00)"></span>':o;
+  b.onclick=()=>{curOrn=o; [...picker.children].forEach(c=>c.style.outline=''); b.style.outline='2px solid #ffd86b';};
+  if(i===0) b.style.outline='2px solid #ffd86b';
+  picker.appendChild(b);
+});
+
+const TIERS=[[60,150,80],[100,205,100],[150,265,120],[200,310,135]];
+function halfW(y){
+  let h=-1;
+  for(const [a,b,w] of TIERS){ if(y>=a&&y<=b) h=Math.max(h,(y-a)/(b-a)*w); }
+  return h;
+}
+function inTree(x,y,margin=0){
+  const h=halfW(y);
+  return h>0 && y>66 && y<302-margin*.3 && Math.abs(x-150)<h-margin;
+}
+function pickSpot(taken,minD,tries=70){
+  let best=null,bestD=-1;
+  for(let i=0;i<tries;i++){
+    let x,y,k=0;
+    do{ x=20+Math.random()*260; y=78+Math.random()*218; k++; }while(!inTree(x,y,14)&&k<60);
+    if(k>=60) continue;
+    let d=Infinity;
+    for(const o of taken){ const dd=Math.hypot(o.x-x,o.y-y); if(dd<d) d=dd; }
+    if(d>bestD){ bestD=d; best={x:Math.round(x),y:Math.round(y)}; }
+  }
+  return bestD>=minD ? best : null;
+}
+
+let drawnOrns=new Set();
+function drawOrn(o,animate){
+  const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+  if(animate) g.setAttribute('class','orn');
+  if(o.t==='ball'){
+    g.innerHTML=`<circle cx="${o.x}" cy="${o.y}" r="9" fill="${o.c}" stroke="rgba(0,0,0,.25)"/><circle cx="${o.x-3}" cy="${o.y-3}" r="3" fill="rgba(255,255,255,.7)"/><rect x="${o.x-2}" y="${o.y-12}" width="4" height="4" fill="#ffd86b"/>`;
+  } else {
+    g.innerHTML=`<text x="${o.x}" y="${o.y+7}" font-size="20" text-anchor="middle">${esc(o.t)}</text>`;
+  }
+  $('#ornaments').appendChild(g);
+}
+function renderOrns(){
+  const items=live(state.orns), cur=new Set();
+  $('#ornaments').innerHTML='';
+  items.forEach(o=>{ drawOrn(o,!drawnOrns.has(o.id)); cur.add(o.id); });
+  drawnOrns=cur;
+  $('#ornCount').textContent=items.length;
+}
+function addOrn(t,x,y,c){
+  const now=Date.now();
+  const o={id:uid(),t,x,y,c,ts:now,u:now};
+  state.orns.push(o);
+  return o;
+}
+function treeMsg(t){ const m=$('#treeMsg'); m.textContent=t; clearTimeout(treeMsg.t); treeMsg.t=setTimeout(()=>m.textContent='',2500); }
+
+$('#treeSvg').addEventListener('click',e=>{
+  const svg=$('#treeSvg'), pt=svg.createSVGPoint(); pt.x=e.clientX; pt.y=e.clientY;
+  const p=pt.matrixTransform(svg.getScreenCTM().inverse());
+  if(!inTree(p.x,p.y,0)){ svg.classList.remove('shake'); void svg.getBoundingClientRect(); svg.classList.add('shake'); return; }
+  addOrn(curOrn,Math.round(p.x),Math.round(p.y),rnd(ornColors));
+  renderOrns(); commit({saved:false});
+});
+
+let lightPts=[];
+$('#lightsBtn').onclick=function(){
+  const layer=$('#lightsLayer');
+  const on=$('#tree').classList.toggle('lights-on');
+  this.textContent=on?'💡 Выключить огни':'💡 Включить огни';
+  layer.innerHTML=''; lightPts=[];
+  if(!on) return;
+  const cols=shuffle(ornColors); let ci=0;
+  for(let i=0;i<42;i++){
+    const spot=pickSpot(lightPts.concat(live(state.orns)),17,50);
+    if(!spot) break;
+    lightPts.push(spot);
+    const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    const col=cols[ci++%cols.length];
+    c.setAttribute('cx',spot.x); c.setAttribute('cy',spot.y); c.setAttribute('r',3);
+    c.setAttribute('fill',col); c.setAttribute('class','tl'); c.style.color=col;
+    c.style.animationDelay=(Math.random()*1.5).toFixed(2)+'s';
+    layer.appendChild(c);
+  }
+};
+
+let autoBusy=false;
+$('#randomOrn').onclick=()=>{
+  if(autoBusy) return;
+  const types=shuffle(['ball','ball','ball',...pickList.slice(1)]);
+  const cols=shuffle(ornColors);
+  let ti=0, ci=0, n=0, added=0;
+  const total=16;
+  autoBusy=true;
+  const iv=setInterval(()=>{
+    const spot=pickSpot(live(state.orns),27,90);
+    if(!spot){
+      clearInterval(iv); autoBusy=false; if(added) commit({saved:false});
+      treeMsg(added?'Ёлка полностью нарядна! 🎄':'Ёлка уже украшена — свободного места нет 🎄');
+      return;
+    }
+    addOrn(types[ti++%types.length],spot.x,spot.y,cols[ci++%cols.length]);
+    renderOrns(); added++;
+    if(++n>=total){ clearInterval(iv); autoBusy=false; commit({saved:false}); }
+  },90);
+};
+$('#clearOrn').onclick=()=>{
+  if(autoBusy) return;
+  const now=Date.now();
+  state.orns.forEach(o=>{ if(!o.del){ o.del=true; o.u=now; } });
+  renderOrns(); commit({saved:false});
+};
+
+/* ---------- predictions ---------- */
+const pr=[
+ 'в этом году тебя ждёт неожиданное путешествие ✈️','ты научишься чему-то совершенно новому и удивишь всех 🎨',
+ 'тебя ждёт тот самый вкусный ужин, который запомнится надолго 🍰','удача будет сопровождать тебя на каждом шагу 🍀',
+ 'ты найдёшь то, что давно потерял — и это будет приятный сюрприз 🔍','тебе подарят подарок, о котором ты мечтал(а) 🎁',
+ 'ты станешь причиной самого громкого смеха за семейным столом 😂','тебя ждёт повышение — в семье, на работе или в рейтинге мандариноедов 🍊',
+ 'у тебя появится новое увлечение, которое согреет всю семью 🔥','ты будешь здоров(а), бодр(а) и полон(на) сил ⚡',
+ 'осуществится мечта, о которой ты никому не говорил(а) 🌠','ты получишь много обнимашек — берегись, будет жарко 🤗'
+];
+$('#predBtn').onclick=()=>{
+  const name=$('#predName').value.trim()||'Дорогой друг';
+  const out=$('#predOut');
+  out.innerHTML='<span class="text-4xl twinkle inline-block">🔮</span>';
+  setTimeout(()=>{
+    out.innerHTML=`<div class="fade-in"><b class="script text-[color:var(--gold)] text-xl sm:text-2xl">${esc(name)}</b>, ${rnd(pr)}</div>`;
+    launch();
+  },900);
+};
+$('#predName').addEventListener('keydown',e=>{if(e.key==='Enter')$('#predBtn').click()});
+
+/* =====================================================================
+   ТРАДИЦИИ (чек-лист)
+   ===================================================================== */
+function renderTodo(){
+  const items=live(state.todo);
+  const ul=$('#todo'); ul.innerHTML='';
+  items.forEach(it=>{
+    const li=document.createElement('li');
+    li.className='flex items-center gap-3 bg-white/10 rounded-2xl px-3 sm:px-4 py-2.5';
+    li.innerHTML=`<input type="checkbox" class="check" ${it.d?'checked':''}><span class="flex-1 break-words ${it.d?'done':''}">${esc(it.t)}</span><button class="w-9 h-9 grid place-items-center opacity-60 hover:opacity-100" aria-label="Удалить">✕</button>`;
+    li.querySelector('input').onchange=e=>{
+      const wasAll=live(state.todo).every(t=>t.d);
+      it.d=e.target.checked; it.u=Date.now();
+      if(e.target.checked) launch(e.target.getBoundingClientRect().left+14);
+      commit(); renderTodo();
+      const all=live(state.todo); if(!wasAll && all.length && all.every(t=>t.d)) bigShow();
+    };
+    li.querySelector('button').onclick=()=>{ it.del=true; it.u=Date.now(); commit(); renderTodo(); };
+    ul.appendChild(li);
+  });
+  const done=items.filter(t=>t.d).length, pct=items.length?Math.round(done/items.length*100):0;
+  $('#bar').style.width=pct+'%';
+  $('#barTxt').textContent=`Выполнено ${done} из ${items.length}`+(pct===100&&items.length?' — вы волшебная семья! 🎉':'');
+}
+$('#todoForm').onsubmit=e=>{
+  e.preventDefault();
+  const v=$('#todoNew').value.trim(); if(!v) return;
+  const now=Date.now();
+  state.todo.push({id:uid(),t:v,d:false,ts:now,u:now});
+  $('#todoNew').value=''; commit(); renderTodo();
+};
+$('#todoReset').onclick=()=>{
+  const now=Date.now();
+  state.todo.forEach(t=>{ if(!t.del&&t.d){ t.d=false; t.u=now; } });
+  commit(); renderTodo();
+};
+
+/* =====================================================================
+   СТЕНА ЖЕЛАНИЙ
+   ===================================================================== */
+const noteCols=['#fff3a8','#ffc2d1','#b9f6ca','#b3e5fc','#e1bee7','#ffe0b2'];
+let seenWishes=new Set();
+function renderWishes(){
+  const items=live(state.wishes).sort((a,b)=>(b.ts||0)-(a.ts||0));
+  const w=$('#wishes'); w.innerHTML='';
+  const cur=new Set();
+  items.forEach(x=>{
+    const d=document.createElement('div');
+    d.className='note p-5 rounded-lg text-slate-800 shadow-xl relative'+(seenWishes.has(x.id)?' noanim':'');
+    d.style.cssText=`background:${esc(x.c)};--r:${parseFloat(x.r)||0}deg`;
+    d.innerHTML=`<div class="absolute -top-2 left-1/2 -translate-x-1/2 text-2xl">📌</div>
+      <button class="absolute top-1 right-1 w-8 h-8 grid place-items-center text-slate-500 hover:text-slate-900" aria-label="Удалить желание">✕</button>
+      <p class="mt-2 font-semibold leading-snug">«${esc(x.t)}»</p><p class="mt-3 text-right script text-sm">— ${esc(x.w)}</p>`;
+    d.querySelector('button').onclick=()=>{ x.del=true; x.u=Date.now(); commit(); renderWishes(); };
+    w.appendChild(d); cur.add(x.id);
+  });
+  seenWishes=cur;
+  $('#noWish').style.display=items.length?'none':'block';
+}
+$('#wishForm').onsubmit=e=>{
+  e.preventDefault();
+  const now=Date.now();
+  state.wishes.push({id:uid(),w:$('#wishWho').value.trim(),t:$('#wishTxt').value.trim(),c:rnd(noteCols),r:(Math.random()*6-3).toFixed(1),ts:now,u:now});
+  $('#wishTxt').value=''; commit(); renderWishes(); launch(); launch();
+};
+$('#wishClear').onclick=()=>{
+  const items=live(state.wishes);
+  if(items.length && confirm('Убрать все желания со стены?'+(room?' Они исчезнут у всей семьи.':''))){
+    const now=Date.now(); items.forEach(x=>{ x.del=true; x.u=now; });
+    commit(); renderWishes();
+  }
+};
+
+function renderAll(){ renderOrns(); renderTodo(); renderWishes(); }
+
+/* =====================================================================
+   музыка (один планировщик, без наложений)
+   ===================================================================== */
+let actx, playing=false, timer=null, step=0, nextTime=0;
+const N={C:261.63,D:293.66,E:329.63,F:349.23,G:392,A:440,B:493.88,C5:523.25};
+const mel=[['E',1],['E',1],['E',2],['E',1],['E',1],['E',2],['E',1],['G',1],['C',1.5],['D',.5],['E',4],
+ ['F',1],['F',1],['F',1.5],['F',.5],['F',1],['E',1],['E',1],['E',.5],['E',.5],['E',1],['D',1],['D',1],['E',1],['D',2],['G',2]];
+function note(f,t,d){
+  const o=actx.createOscillator(), g=actx.createGain();
+  o.type='triangle'; o.frequency.value=f;
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(.18,t+.02); g.gain.exponentialRampToValueAtTime(.001,t+d);
+  o.connect(g); g.connect(actx.destination); o.start(t); o.stop(t+d+.05);
+  const o2=actx.createOscillator(), g2=actx.createGain(); o2.type='sine'; o2.frequency.value=f*2;
+  g2.gain.setValueAtTime(.05,t); g2.gain.exponentialRampToValueAtTime(.001,t+d*.6); o2.connect(g2); g2.connect(actx.destination); o2.start(t); o2.stop(t+d);
+}
+function scheduler(){
+  while(nextTime < actx.currentTime + 0.4){
+    const [n,b]=mel[step%mel.length], dur=b*.26;
+    note(N[n],nextTime,dur*1.3);
+    nextTime+=dur; step++;
+    if(step%mel.length===0) nextTime+=.9;
+  }
+}
+function stopMusic(){ if(timer){clearInterval(timer);timer=null;} }
+function startMusic(){ stopMusic(); step=0; nextTime=actx.currentTime+.1; scheduler(); timer=setInterval(scheduler,100); }
+$('#musicBtn').onclick=function(){
+  if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)();
+  if(actx.state==='suspended') actx.resume();
+  playing=!playing;
+  $('#musicIcon').textContent=playing?'🔕':'🔔';
+  $('#musicLbl').textContent=playing?' Выключить':' Музыка';
+  if(playing) startMusic(); else stopMusic();
+};
+
+/* =====================================================================
+   старт
+   ===================================================================== */
+persist();            // сохраняем (в т.ч. мигрированные) данные в новом формате
+renderAll();
+renderSync();
+handleHash();
+if(room) syncNow();
+setTimeout(()=>{launch();setTimeout(launch,400)},800);
+</script>
+</body>
+</html>
